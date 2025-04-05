@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="col body">
+    <div class="container mv">
+      <div class="row m-2">
+        <div class="col col-12 col-lg-12 col-sm-12 col-md-12">
+          <div class="card mt-5 ">
+            <div class="card-body">
+              <h5><i class="bi bi-gear m-2 text-dark"></i>Change Your Password</h5>
+              {% if messages %} {% for message in messages %}
+                   </div>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <strong>{{message}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endfor %} {% endif %}
+                <form method="post" action="{% url 'accountSetting' %}">
+                    {% csrf_token %}
+                    <div class="card w-">
+                        <div class="card-body">
+                            <label class="form-label">Current Password</label>
+                            <input type="Password" class="form-control" name="">
+                            <label class="form-label">New Password</label>
+                            <input type="Password" class="form-control" name="">
+                            <label class="form-label">Re-Enter Password</label>
+                            <input type="Password" class="form-control" name="">
+                            <input type="submit" value="Submit" class="form-control bg-info mt-5" name="">
+                        </div>  
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+ 

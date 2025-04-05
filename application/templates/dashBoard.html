@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+        <div class="col-md-9">
+            <div class="row m-2 ">
+                <div class="card card-1 text-white col-md-3 col-md-3 m-3" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{parked}}</h5><span class="card-icon"><i class="bi bi-p-circle"></i></span>
+                        <h6 class="card-subtitle mb-2 ">Vehicles Parked</h6>
+                    </div>
+                </div>
+
+                <div class="card bg-dark text-white col-md-3  m-3" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{departed}}</h5><span class="card-icon"><i class="bi bi-car-front"></i></span>
+                        <h6 class="card-subtitle mb-2 ">Deported Vehicles</h6>
+                    </div>
+                </div>
+
+                <div class="card bg-danger text-white col-md-3 m-3" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{tot_category}}</h5><span class="card-icon"><i class="bi bi-box2"></i></span>
+                        <h6 class="card-subtitle mb-2">Available Category</h6>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row m-2  w-100">
+                <div class="card  bg-warning text-white col-md-3  m-3" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">$ {{tot_earnings}} </h5><span class="card-icon"><i class="bi bi-coin"></i></span>
+                        <h6 class="card-subtitle mb-2 ">Total Earnings</h6>
+                    </div>
+                </div>
+
+                <div class="card bg-secondary text-white col-md-3  m-3" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{tot_records}}</h5><span class="card-icon"><i class="bi bi-file-earmark-text"></i></span>
+                        <h6 class="card-subtitle mb-2 ">Total Records</h6>
+                    </div>
+                </div>
+
+                <div class="card bg-primary text-white col-md-3 m-3" style="width: 20rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{tot_vehicle_limit}}</h5><span class="card-icon"><i class="bi bi-chevron-double-down"></i></span>
+                        <h6 class="card-subtitle mb-2">Total Parking Slots</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+{% endblock %}

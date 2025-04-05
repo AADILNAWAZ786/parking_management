@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="mycard card shadow mv">
+    <div class="card-header">
+        <div class="col-7">
+            <b><i class="bi bi-list-check"></i>&nbsp;&nbsp;Manage Vehicle | Only the records of the last 30 days are available here</b>
+        </div>
+    </div>    
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" name="a" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <div class="card-body" style="margin-left: 100px;">
+            <table id="example" class="table text-center table-striped table-bordered" >
+                <thead class="text-center">
+                    <tr>
+                        <th >#</th>
+                        <th>Vehicle Number</th>
+                        <th>Type</th>
+                        <th>Area No</th>
+                        <th>Charge</th>
+                        <th>Arrival Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in vehicles %}
+								<tr align="center">
+								  <th scope="row">{{ i.id }}</th>
+								  <td>{{ i.vehicle_no }}</td>
+								  <td>{{ i.vehicle_type }}</td>
+								  <td>{{ i.parking_area_no }}</td>
+								  <td><b style="color:gold">$&nbsp;&nbsp;</b>&nbsp;{{ i.parking_charge }}</td>
+								  <td>{{ i.arrival_time }}</td>
+								  <td>
+									  {% if i.status == 'parked' %}
+									   <a class="rounded-pill  btn btn-primary btn-sm">{{ i.status }}</a>
+									  {% else %}
+									  <a class="rounded-pill  btn btn-success btn-sm">{{ i.status }}</a>
+								  {% endif %}
+								  </td>
+									<td>
+										{% if i.status == 'parked' %}
+										<a href="{% url 'action' i.id %}" class="rounded btn btn-primary">Done</a>
+										{% else %}
+										<a href="{% url 'action' i.id %}" class="rounded btn btn-light">Done</a>
+										{% endif %}
+									</td>
+								</tr>
+					{% endfor %}
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

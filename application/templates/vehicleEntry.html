@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="col-md-6 col-lg-6 col-sm-12 col-12">
+    <div class="card shadow my-4">
+        <div class="card-header">
+            <b><i class="bi bi-list-ul"></i>  Add Vehicle</b>
+        </div>
+        <div class="card-body col-12 m-auto">
+            <form class="m-0" method="post" action="{% url 'vehicle_entry' %}">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-6">
+                        <label for="id_vehicle_no" class="form-label">Vehicle Number</label>
+                        <input type="text" name="vehicle_no" class="form-control" id="id_vehicle_no" required>
+                    </div>
+                    <div class="col">
+                        <label class="form-label">Vehicle Type</label>
+                        <select name="type" class="form-select" id="vehicle-type" required>
+                            <option value="" selected>Select the vehicle type</option>
+                            {% for i in vehicle_type %}
+                            <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Parking Area Number</label>
+                        <select name="parking_area_no" class="form-select" id="parking-area-no" required>
+                            <option value="" selected>Select parking area no</option>
+                            {% for i in category_data %}
+                            <option value="{{ i.id }}" data-vehicle-type="{{ i.vehicle_type }}">{{ i.parking_area_no }} - {{ i.vehicle_type }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Parking Charge</label>
+                        <select name="charge" class="form-select" id="parking-charge" required>
+                            <option value="" selected>Charge</option>
+                            {% for i in parking_charge %}
+                            <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mycard card shadow">
+        <div class="card-header">
+            <b><i class="bi bi-list-check"></i>  Current Vehicles</b>
+        </div>
+        <div class="card-body" style="margin-left: 100px;">
+            <table id="example" class="table text-center table-striped table-bordered">
+                <thead class="text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Vehicle Number</th>
+                        <th>Area Number</th>
+                        <th>Arrival Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in vehicle %}
+                    <tr align="center">
+                        <th scope="row">{{ i.id }}</th>
+                        <td>{{ i.vehicle_no }}</td>
+                        <td>{{ i.parking_area_no.parking_area_no }}</td>
+                        <td>{{ i.arrival_time }}</td>
+                        <td>
+                            {% if i.status == 'parked' %}
+                            <button type="button" class="rounded-pill btn btn-primary btn btn-sm" style="width:100px;">
+                                {{ i.status }}</button>
+                            {% else %}
+                            <button type="button" class="rounded-pill btn btn-success btn btn-sm" style="width:100px;">
+                                {{ i.status }}</button>
+                            {% endif %}
+                        </td>
+                        <td><button type="button" class="btn btn-sm btn-outline-secondary"><i class="fa-solid fa-file-invoice"></i> Receipt</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="col-md-3 my-4 ">
+    <div class="card shadow">
+        <div class="card-header">
+            <b><i class="bi bi-layers"></i>  Vehicle Limitations</b>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                {% for x in data %}
+                <tr>
+                    <td>{{ x.vehicle_type }}</td>
+                    <td>
+                        <span class="des5 badge bg-success rounded text-white p-1" style="margin-left:100px;">{{ x.counts }} </span> out of {{ x.vehicle_limit }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const vehicleTypeSelect = document.getElementById('vehicle-type');
+    const parkingAreaSelect = document.getElementById('parking-area-no');
+    const parkingChargeSelect = document.getElementById('parking-charge');
+
+    // Pass category data from Django to JavaScript
+    const categoryData = [
+        {% for i in category_data %}
+        {
+            id: "{{ i.id }}",
+            vehicle_type: "{{ i.vehicle_type }}",
+            parking_area_no: "{{ i.parking_area_no }}",
+            parking_charge: "{{ i.parking_charge }}"
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    vehicleTypeSelect.addEventListener('change', function() {
+        const selectedType = this.value;
+        parkingAreaSelect.value = ""; // Reset
+        parkingChargeSelect.value = ""; // Reset
+
+        if (selectedType) {
+            // Find matching CategoryEntry for the selected vehicle type
+            const matchingCategory = categoryData.find(category => category.vehicle_type === selectedType);
+            if (matchingCategory) {
+                // Set parking area to the matching id
+                parkingAreaSelect.value = matchingCategory.id;
+                // Set parking charge
+                parkingChargeSelect.value = matchingCategory.parking_charge;
+            }
+        }
+    });
+});
+</script>
+
+{% endblock %}

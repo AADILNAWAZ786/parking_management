@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="col-md-6 col-lg-6 col-sm-12 col-12">
+        <div class="card shadow my-4">
+            <div class="card-header">
+                <b><i class="bi bi-list-ul"></i>&nbsp;&nbsp;Add Category</b>
+            </div>
+            <div class="card-body col-12 m-auto">
+                
+                <form class="m-0" method="post" action="{% url 'category_entry' %}">
+                    {% csrf_token %}
+                    <div class="row Category-1 m-0">
+                        <div class="form-group col-6 m-0">
+                            <label for="">Parking Area Number</label>
+                            <input type='text' name="parking" class="form-control" id="parkingAreaNumber">
+                        </div>
+                        <div class="form-group col-6 m-0">
+                            <label for="">Vehicle Type</label>
+                            <input type="text" name="type" class="form-control" id="vehicleType">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Vehicle Limit</label>
+                            <input type="text" name="limit" class="form-control" id="v_limit">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Parking Charge</label>
+                            <input type="text" name="charge" class="form-control" id="v_limit">
+                        </div>
+                        <div class="text-center my-3 ">
+                            <button class="col-12 btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="mycard card shadow">
+            <div class="card-header">
+                <b><i class="bi bi-list-check"></i>&nbsp;&nbsp;Manage Category</b>
+            </div>
+            <div class="card-body" style="margin-left: 100px;">
+                    <table id="example" class="table text-center table-striped table-bordered">
+                        <thead class="text-center">
+                            <tr>
+                                <th>#</th>
+                                <th>Area Number</th>
+                                <th>Vehicle Type</th>
+                                <th>Vehicle Limit</th>
+                                <th>Charge</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                                {% for i in category_data %}
+								<tr align="center">
+								  <th scope="row">{{i.id}}</th>
+								  <td>{{i.parking_area_no}}</td>
+								  <td>{{i.vehicle_type}}</td>
+								  <td>{{i.vehicle_limit}}</td>
+								  <td>{{i.parking_charge}}</td>
+								  <td >
+									  {% if i.status == 'activated' %}
+									  <button type="button" class="rounded-pill btn btn-success btn-sm {{i.status }} "> {{i.status}}</button>
+								  		{% else %}
+									  <button type="button" class="rounded-pill btn btn-danger btn-sm {{i.status }} "> {{i.status}}</button>
+									  {% endif %}
+								  </td>
+								  <td>
+									  {% if i.status == 'activated' %}
+									  <a href="{% url 'deactivate_category' i.id %}" class="btn btn-danger">Deactivated</a>
+									  {% else %}
+									  <a href="{% url 'activate_category' i.id %}" class="btn btn-success ">Activated</a>
+									  {% endif %}
+
+	                			      <a type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-left:5px" onclick="save('{{ i.id }}', '{{ i.parking_area_no }}','{{ i.vehicle_type}}','{{ i.vehicle_limit }}', '{{ i.parking_charge }}')" ><i class="bi bi-pencil-square"></i></a>
+	                			      <a href="{% url 'delete_category' i.id %}" class="btn btn-danger"><i class="bi bi-trash"></i></a></td>
+								</tr>
+							     {% endfor %}
+
+                            </tbody>
+                    </table>
+            </div>    
+        </div>
+    </div>
+    <div class="col-md-3 my-4 ">
+        <div class="card shadow">
+            <div class="card-header">
+                <b><i class="bi bi-info-circle"></i>&nbsp;&nbsp;Details:</b>
+            </div>
+            <div class="card-body">
+                <ul class="list-group " style="padding-left:15px; padding-right:15px; padding-bottom:15px;">
+					{% for i in category_data %}
+				  <li class="list-group-item" style="padding-top:15px; padding-bottom:10px;">{{i.vehicle_type}}<span class="float-end"><b>$</b>&nbsp;{{i.parking_charge}}.00</span></li>
+				 {% endfor %}
+				</ul>
+            </div>
+        </div>
+    </div>
+
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="bi bi-pencil-square"></i>
+                Edit
+              </h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <!-- modal content start here -->
+              <div class="container">
+                <form method="post" action="{% url 'edit' %}">
+                  {% csrf_token %}
+                  <div class="row mb-3">
+                    <div class="col-6">
+                      <label for="parkingAreaNumber" class="form-label"
+                        >Parking Area Number</label
+                      >
+                      <input
+                        type="text"
+                        name="parkingAreaNumber"
+                        class="form-control"
+                        id="parkingAreaNumber"
+                        value=""
+                        required
+                      />
+                    </div>
+                    <div class="col-6">
+                      <label for="parkingAreaNumber" class="form-label"
+                        >Vehicle Type</label
+                      >
+                      <input
+                        type="text"
+                        name="vehicleType"
+                        class="form-control"
+                        id="vehicleType"
+                        value=""
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col">
+                      <label for="vehicleLimit" class="form-label"
+                        >Vehicle Limit</label
+                      >
+                      <input
+                        type="text"
+                        name="vehicleLimit"
+                        class="form-control"
+                        id="vehicleLimit"
+                        value=""
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col">
+                      <label for="parkingCharge" class="form-label"
+                        >Parking Charge</label
+                      >
+                      <input
+                        type="text"
+                        name="parkingCharge"
+                        class="form-control"
+                        id="parkingCharge"
+                        value=""
+                        required
+                      />
+                      <input
+                        type="number"
+                        name="id"
+                        id="id"
+                        style="display: none"
+                        value=""
+                      />
+                    </div>
+                  </div>
+                  <div class="row p-2">
+                    <button type="submit" class="btn btn-primary">
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- modal content end here -->
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- scripts for modal -->
+      <script>
+        function save(id, pan, vt, vl, pc) {
+          var parkingAreaNumber = document.getElementById("parkingAreaNumber");
+          var vehicleType = document.getElementById("vehicleType");
+          var vehicleLimit = document.getElementById("vehicleLimit");
+          var parkingCharge = document.getElementById("parkingCharge");
+          var ids = document.getElementById("id");
+          parkingAreaNumber.value = pan;
+          vehicleType.value = vt;
+          vehicleLimit.value = vl;
+          parkingCharge.value = pc;
+          ids.value = id;
+        }
+        function navigate() {
+          var editUrl = "edit/" + idn + "/";
+          window.location.href = editUrl;
+        }
+      </script>	
+
+{% endblock %}

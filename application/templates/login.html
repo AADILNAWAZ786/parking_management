@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Parking Management</title>
+<!--    bootstrap cdn link-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<!--    script cdn link -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+<!-- icon cdn link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<!--    <link rel="stylesheet" type="text/css" href="static/css/style.css">-->
+
+<style type="text/css">
+    .body{
+    background-color:grey;
+    color:white;
+    }
+    .head{
+    margin-left:15%;
+    }
+    .line{
+    margin-right:15%;
+    font-weight:5px;
+    }
+    .container{
+    margin:auto;
+    width:500px;
+    }
+    .container form{
+    width:100%;
+    padding:10px;
+    background:white;
+    border-radius:5px;
+    margin-top:20%;
+    }
+    .mb-3{
+    padding-left:50px;
+    padding-right:50px;
+    }
+    .form-control{
+    border-color:grey;
+    height:35px;
+    width:350px
+
+    }
+
+</style>
+
+
+</head>
+<body class="body">
+ <div class="head">
+      <h5 style="font-style:Sans-serif; margin-top:10px;"><b style="color: blue;"><i class="fa-solid fa-car-side"></i> S</b>imple Parking Management System<hr class="line"></h5>
+ </div>
+
+    <div class="container">
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %} {% if messages %} {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                ></button>
+              </div>
+              {% endfor %} {% endif %}
+            <h5 style="color:black;" align="center"><i class="fa-solid fa-right-to-bracket" style="color: black;"></i> Admin Login</h5>
+
+<!--            username start here-->
+            <div class="mb-3">
+                <label  for="username" class="form-label" style="color:black;" ><b>Username</b></label>
+                <input  type="text" class="form-control" name="user"  id="username" style="padding-top:5px">
+            </div>
+<!--            password start here-->
+            <div class="mb-3">
+                <label  for="password" class="form-label" style="color:black;" ><b>Password</b></label>
+                <input  type="password"  class="form-control" name="pass" id="password" style="padding-bottom:10px">
+            </div>
+
+            <div class="d-grip gap-2" style="padding-left:49px; padding-right: 5px; margin-bottom: 5px;">
+              	<button class="btn btn-primary" type="submit" value="Login" style="border-radius: 30px; height:35px; width:350px">Login</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
